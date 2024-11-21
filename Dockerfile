@@ -185,13 +185,12 @@ RUN set -xe && \
 
 # Check for latest version here: https://golang.org/dl
 ENV GO_VERSIONS \
-      1.21.9
+      1.22.3
 RUN set -xe && \
     for VERSION in $GO_VERSIONS; do \
-      curl -fSsL "https://storage.googleapis.com/golang/go$VERSION.linux-amd64.tar.gz" -o /tmp/go-$VERSION.tar.gz && \
-      mkdir /usr/local/go-$VERSION && \
-      tar -xf /tmp/go-$VERSION.tar.gz -C /usr/local/go-$VERSION --strip-components=1 && \
-      rm -rf /tmp/*; \
+        curl -fSsL "https://go.dev/dl/go$VERSION.linux-amd64.tar.gz" -o /tmp/go$VERSION.linux-amd64.tar.gz && \
+        rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/go$VERSION.linux-amd64.tar.gz && \
+        rm -rf /tmp/*; \
     done
 
 # Check for latest version here: https://www.php.net/downloads
@@ -229,16 +228,16 @@ RUN set -xe && \
     ln -s /lib/x86_64-linux-gnu/libreadline.so.7 /lib/x86_64-linux-gnu/libreadline.so.6
 
 # Check for latest version here: https://github.com/microsoft/TypeScript/releases
-ENV TYPESCRIPT_VERSIONS \
-      5.4.5
-RUN set -xe && \
-    curl -fSsL "https://deb.nodesource.com/setup_12.x" | bash - && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends nodejs && \
-    rm -rf /var/lib/apt/lists/* && \
-    for VERSION in $TYPESCRIPT_VERSIONS; do \
-      npm install -g typescript@$VERSION; \
-    done
+# ENV TYPESCRIPT_VERSIONS \
+#       5.4.5
+# RUN set -xe && \
+#     curl -fSsL "https://deb.nodesource.com/setup_12.x" | bash - && \
+#     apt-get update && \
+#     apt-get install -y --no-install-recommends nodejs && \
+#     rm -rf /var/lib/apt/lists/* && \
+#     for VERSION in $TYPESCRIPT_VERSIONS; do \
+#       npm install -g typescript@$VERSION; \
+#     done
 
 # Check for latest version here: https://nasm.us
 ENV NASM_VERSIONS \
@@ -296,7 +295,7 @@ RUN set -xe && \
 
 # Check for latest version here: https://www.pypy.org/download.html
 # Used for support of PyPy.
-RUN wget https://downloads.python.org/pypy/pypy3.10-v7.3.16-linux64.tar.bz2 -O /tmp/pypy3.10-v7.3.16-linux64.tar.bz2 && \
+RUN wget https://downloads.python.org/pypy/pypy3.10-v7.3.16-linux64.tar.bz2 --no-check-certificate -O /tmp/pypy3.10-v7.3.16-linux64.tar.bz2 && \
     mkdir /tmp/pypy3.10 && \
     tar -xf /tmp/pypy3.10-v7.3.16-linux64.tar.bz2 -C /tmp/pypy3.10 && \
     rm /tmp/pypy3.10-v7.3.16-linux64.tar.bz2 && \
@@ -329,5 +328,5 @@ RUN set -xe && \
     rm -rf /tmp/*
 ENV BOX_ROOT /var/local/lib/isolate
 
-LABEL maintainer="Agent-01"
-LABEL version="1.0.0"
+LABEL maintainer="Herman Zvonimir Došilović <hermanz.dosilovic@gmail.com>"
+LABEL version="1.4.0"
